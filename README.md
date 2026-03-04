@@ -1,249 +1,243 @@
-# 🎬 Netflix-Style Synthetic Dataset
+🎬 Netflix Churn Prediction
 
-## 📊 Dataset Overview
-This synthetic dataset simulates a Netflix-style streaming platform with realistic user behavior, content catalog, and engagement metrics. Perfect for machine learning, data science, and analytics projects.
+Predicting user churn from behavioral viewing patterns using machine learning.
 
-### 🎯 Key Features
-- **210,290+ total records** across 6 interconnected tables
-- **Realistic data quality issues** (missing values, duplicates, outliers)
-- **Time-series data** spanning 2024-2025
-- **USA/Canada regional focus**
-- **ML-ready structure** for multiple use cases
+This project analyzes Netflix-style watch history data to identify behavioral signals that indicate when users are likely to churn (stop watching content). Using session-level viewing logs, we engineer engagement-based features and train machine learning models to detect churn risk.
 
----
+📊 Project Overview
 
-## 📁 Dataset Structure
+Streaming platforms rely heavily on sustained user engagement. When viewing activity declines, users are more likely to cancel subscriptions or stop using the platform.
 
-| File | Rows | Description |
-|------|------|-------------|
-| `users.csv` | 10,300 | User demographics, subscription plans, regional data |
-| `movies.csv` | 1,040 | Movies/shows with metadata, genres, ratings |
-| `watch_history.csv` | 105,000 | Viewing sessions with device, quality, progress data |
-| `recommendation_logs.csv` | 52,000 | Recommendation engine logs with click-through rates |
-| `search_logs.csv` | 26,500 | User search queries and interaction patterns |
-| `reviews.csv` | 15,450 | User reviews with sentiment analysis and ratings |
+This project builds a behavior-based churn prediction pipeline using Netflix-style viewing data.
 
----
+Main goals:
 
-## 🎪 Data Quality Features (Teaching-Ready!)
+Identify behavioral patterns associated with churn
 
-### Missing Values (10-15% across key columns)
-- Realistic patterns reflecting real-world data collection
-- Various missing mechanisms (MCAR, MAR, MNAR)
-- Perfect for imputation technique practice
+Build user-level features from session-level viewing logs
 
-### Duplicates (3-6% per table)
-- Natural duplicates from user behavior
-- System-generated duplicates from data processing
-- Great for deduplication algorithm testing
+Train machine learning models to predict churn risk
 
-### Outliers & Anomalies
-- **Age outliers**: Very young/old users (5-110 years)
-- **Spending outliers**: High-value customers ($200-1000/month)
-- **Binge watchers**: Sessions 5-13 hours long
-- **Duration anomalies**: 10-minute movies, 10-hour shows
+Visualize key engagement signals that influence retention
 
----
+📁 Dataset
 
-## 🤖 Machine Learning Use Cases
+Synthetic Netflix-style dataset simulating a real streaming platform.
 
-### 1. **Churn Prediction** 🎯
-- Target: `is_active` in users table
-- Features: Watch patterns, engagement metrics, demographics
-- **Models**: Logistic Regression, Random Forest, XGBoost
+Dataset characteristics:
 
-### 2. **Recommendation Systems** 🔮
-- Collaborative filtering using user-movie interactions
-- Content-based filtering with movie features
-- **Models**: Matrix Factorization, Neural Collaborative Filtering
+105,000+ viewing sessions
 
-### 3. **Content Popularity Forecasting** 📈
-- Predict trending content based on early engagement
-- Time-series analysis of viewing patterns
-- **Models**: ARIMA, Prophet, LSTM
+10,000 users
 
-### 4. **Sentiment Analysis** 💭
-- Review text classification and sentiment scoring
-- Multi-class sentiment prediction
-- **Models**: BERT, RoBERTa, Transformer-based models
+1,000+ movies and shows
 
-### 5. **User Segmentation** 👥
-- Behavioral clustering based on viewing patterns
-- RFM analysis (Recency, Frequency, Monetary)
-- **Models**: K-Means, DBSCAN, Gaussian Mixture Models
+Time period: 2024–2025
 
-### 6. **Search Intent Classification** 🔍
-- Classify user search queries by intent
-- Query suggestion and auto-completion
-- **Models**: TF-IDF + SVM, Word2Vec, BERT
+Key columns used:
 
----
+user_id
+watch_date
+watch_duration_minutes
+completion_rate
+device_type
+genre_primary
+content_type
+is_netflix_original
 
-## 🗂️ Schema Details
+The dataset was cleaned and merged to produce a unified viewing dataset.
 
-### Users Table
-```
-user_id (str): Unique identifier
-email (str): User email address
-first_name (str): First name
-last_name (str): Last name
-age (float): Age in years [Missing: 12%]
-gender (str): Gender category [Missing: 8%]
-country (str): USA or Canada
-state_province (str): State/Province
-city (str): City name
-subscription_plan (str): Basic, Standard, Premium, Premium+
-subscription_start_date (date): When user subscribed
-is_active (bool): Current subscription status
-monthly_spend (float): Monthly spending amount [Missing: 10%]
-primary_device (str): Main viewing device
-household_size (int): Number of people in household [Missing: 15%]
-created_at (datetime): Account creation timestamp
-```
+⚙️ Data Processing
 
-### Movies Table
-```
-movie_id (str): Unique identifier
-title (str): Content title
-content_type (str): Movie, TV Series, Documentary, etc.
-genre_primary (str): Main genre
-genre_secondary (str): Secondary genre [Missing: 40%]
-release_year (int): Year of release
-duration_minutes (float): Runtime in minutes
-rating (str): Content rating (G, PG, R, etc.)
-language (str): Primary language
-country_of_origin (str): Production country
-imdb_rating (float): IMDB score [Missing: 15%]
-production_budget (float): Budget in USD [Missing: 20%]
-box_office_revenue (float): Revenue in USD [Missing: 25%]
-number_of_seasons (int): For series content
-number_of_episodes (int): Total episodes
-is_netflix_original (bool): Platform original content
-added_to_platform (date): When added to platform
-content_warning (bool): Has content warnings
-```
+The raw watch logs were processed using:
 
-### Watch History Table
-```
-session_id (str): Unique session identifier
-user_id (str): References users.user_id
-movie_id (str): References movies.movie_id
-watch_date (datetime): When viewing occurred
-device_type (str): Viewing device
-watch_duration_minutes (float): Time watched [Missing: 8%]
-progress_percentage (float): Completion percentage [Missing: 12%]
-action (str): started, completed, stopped, paused
-quality (str): HD, 4K, SD, Ultra HD [Missing: 5%]
-location_country (str): Viewing location
-is_download (bool): Downloaded for offline viewing
-user_rating (float): User rating if provided [Missing: 85%]
-```
+watch_processing.py
 
----
+Main steps:
 
-## 🚀 Getting Started
+Remove duplicate records
 
-### Quick Analysis Examples
+Clean invalid session data
 
-```python
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
+Convert timestamps
 
-# Load data
-users = pd.read_csv('users.csv')
-movies = pd.read_csv('movies.csv')
-watch_history = pd.read_csv('watch_history.csv')
+Merge movie metadata with watch history
 
-# Quick exploration
-print("Dataset shapes:")
-print(f"Users: {users.shape}")
-print(f"Movies: {movies.shape}")
-print(f"Watch History: {watch_history.shape}")
+Produce a unified viewing dataset
 
-# Check data quality issues
-print("\nMissing values:")
-print(users.isnull().sum().sum())
-print(f"Duplicates in users: {users.duplicated().sum()}")
+Output dataset:
 
-# Basic visualization
-plt.figure(figsize=(12, 4))
-plt.subplot(1, 3, 1)
-users['age'].hist(bins=30)
-plt.title('Age Distribution')
+watch_joined.csv
+🧩 Feature Engineering
 
-plt.subplot(1, 3, 2)
-users['subscription_plan'].value_counts().plot(kind='bar')
-plt.title('Subscription Plans')
+Session-level viewing logs were aggregated into user-level behavioral features.
 
-plt.subplot(1, 3, 3)
-watch_history['action'].value_counts().plot(kind='pie')
-plt.title('Watch Actions')
-plt.tight_layout()
-plt.show()
-```
+Feature categories include:
 
-### Data Cleaning Workflow
-```python
-# Handle missing values
-users['age'].fillna(users['age'].median(), inplace=True)
-users['gender'].fillna('Unknown', inplace=True)
+Recency
+recency_days
 
-# Remove duplicates
-users_clean = users.drop_duplicates(subset=['email'], keep='first')
+Number of days since the user's last viewing session.
 
-# Handle outliers
-Q1 = users['monthly_spend'].quantile(0.25)
-Q3 = users['monthly_spend'].quantile(0.75)
-IQR = Q3 - Q1
-users_filtered = users[
-    (users['monthly_spend'] >= Q1 - 1.5 * IQR) & 
-    (users['monthly_spend'] <= Q3 + 1.5 * IQR)
-]
-```
+Viewing Frequency
+sessions_7d
+sessions_14d
+sessions_30d
 
----
+Number of viewing sessions within recent time windows.
 
-## 🏷️ Recommended Tags for Kaggle
-```
-streaming, netflix, recommendation-systems, churn-prediction, 
-user-behavior, content-analysis, machine-learning, deep-learning,
-time-series, nlp, sentiment-analysis, data-cleaning, synthetic-data,
-entertainment, media-analytics, user-segmentation
-```
+Viewing Volume
+watch_minutes_7d
+watch_minutes_14d
+watch_minutes_30d
 
----
+Total viewing time in recent periods.
 
-## 📈 Potential Research Questions
+Engagement Metrics
+avg_completion_rate
+completion_ratio
 
-1. **What factors contribute most to user churn?**
-2. **How does content genre preference vary by demographics?**
-3. **Can we predict content virality from early viewing patterns?**
-4. **What search patterns indicate high-intent users?**
-5. **How do device preferences affect viewing behavior?**
-6. **What's the optimal recommendation algorithm for this platform?**
+Measures how frequently users finish the content they start.
 
----
+Content & Device Preferences
 
-## 🔗 Connect & Contribute
+User preferences derived from viewing behavior:
 
-This dataset is perfect for:
-- 📚 **Students**: Learning data science and ML
-- 🏢 **Companies**: Benchmarking recommendation systems
-- 🔬 **Researchers**: Testing new algorithms
-- 👨‍💻 **Developers**: Building portfolio projects
+genre_share_*
+device_share_*
 
-**Created with**: Python, Pandas, NumPy, Faker
-**License**: MIT (Free for commercial and academic use)
-**Last Updated**: August 2025
+Examples:
 
----
+genre_share_comedy
+genre_share_action
+device_share_mobile
+device_share_tv
+Netflix Original Engagement
+original_share
 
-## 🎯 Next Steps
-1. **Explore the data** using the provided examples
-2. **Clean and preprocess** using the suggested workflows
-3. **Build models** for your specific use case
-4. **Share your findings** and contribute back to the community!
+Proportion of viewing sessions involving Netflix Original content.
 
-Happy analyzing! 🚀
+🎯 Churn Definition
+
+Churn is defined as behavioral inactivity.
+
+A user is labeled as churned if they stop watching content for a given period.
+
+Two churn horizons were created:
+
+Horizon	Meaning
+14 days	short-term churn detection
+30 days	longer-term churn prediction
+
+Generated datasets:
+
+user_features_churn_full_h14.csv
+user_features_churn_full_h30.csv
+🤖 Modeling
+
+Two machine learning models were trained:
+
+Logistic Regression
+
+Interpretable baseline model.
+
+Random Forest
+
+Tree-based ensemble model capable of capturing nonlinear relationships.
+
+Evaluation metrics used:
+
+ROC-AUC
+F1 Score
+Precision
+Recall
+📈 Visualizations
+
+Several plots were generated to analyze behavioral signals related to churn.
+
+Churn Distribution
+churn_distribution_h14_h30.png
+
+Shows the proportion of churned vs retained users.
+
+Feature Importance
+feature_importance_rf_h14.png
+feature_importance_rf_h30.png
+
+Highlights the most important features for predicting churn.
+
+Recency vs Churn
+recency_vs_churn_h14_h30.png
+
+Shows how churn probability increases with inactivity.
+
+Device Type vs Churn
+device_vs_churn_h14.png
+device_vs_churn_h30.png
+
+Analyzes retention differences across viewing devices.
+
+Netflix Original Viewing vs Churn
+original_vs_churn_h14.png
+original_vs_churn_h30.png
+
+Examines how viewing Netflix Original content relates to churn risk.
+
+Netflix Original Share vs Churn
+original_share_deciles_vs_churn_h14.png
+original_share_deciles_vs_churn_h30.png
+
+Users grouped by Netflix Original viewing share to observe retention trends.
+
+📂 Repository Structure
+Netflix-churn-analysis
+│
+├ watch_processing.py
+├ make_churn_dataset_full.py
+├ add_genre_device_features_windowed.py
+├ train_compare_h14_h30.py
+├ churn_model.py
+├ make_plots.py
+├ make_extra_plots.py
+│
+├ churn_distribution_h14_h30.png
+├ feature_importance_rf_h14.png
+├ feature_importance_rf_h30.png
+├ recency_vs_churn_h14_h30.png
+├ device_vs_churn_h14.png
+├ original_vs_churn_h14.png
+│
+└ README.md
+🧠 Key Insights
+
+Preliminary findings from the analysis:
+
+Recency (days since last watch) is the strongest predictor of churn.
+
+Users with declining completion rates are more likely to churn.
+
+Viewing Netflix Original content is associated with lower churn probability.
+
+Device usage patterns show measurable differences in retention behavior.
+
+🛠️ Technologies Used
+Python
+Pandas
+NumPy
+Scikit-learn
+Matplotlib
+🎯 Project Goal
+
+Demonstrate an end-to-end churn prediction pipeline:
+
+Data Processing
+→ Feature Engineering
+→ Model Training
+→ Evaluation
+→ Visualization
+
+This project simulates how streaming platforms can identify churn risk early and design targeted retention strategies.
+
+License
+
+MIT License
