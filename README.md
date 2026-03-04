@@ -133,6 +133,8 @@ Generated datasets:
 
 user_features_churn_full_h14.csv
 user_features_churn_full_h30.csv
+
+
 🤖 Modeling
 
 Two machine learning models were trained:
@@ -151,6 +153,8 @@ ROC-AUC
 F1 Score
 Precision
 Recall
+
+
 📈 Visualizations
 
 Several plots were generated to analyze behavioral signals related to churn.
@@ -208,6 +212,8 @@ Netflix-churn-analysis
 ├ original_vs_churn_h14.png
 │
 └ README.md
+
+
 🧠 Key Insights
 
 Preliminary findings from the analysis:
@@ -226,8 +232,8 @@ Pandas
 NumPy
 Scikit-learn
 Matplotlib
-🎯 Project Goal
 
+🎯 Project Goal
 Demonstrate an end-to-end churn prediction pipeline:
 
 Data Processing
